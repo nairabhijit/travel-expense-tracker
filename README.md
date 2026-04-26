@@ -13,6 +13,7 @@ Built seamlessly using **Google's Antigravity**, this application allows you to 
 - **Receipt Attachments**: Take photos natively through your camera or upload from your gallery (supports image and PDF uploads) directly into the app. High-resolution images are automatically compressed using HTML5 Canvas APIs before storage.
 - **Rich Analytics & Stats**: Visualize your spending habits through robust `Recharts` data visualization, complete with Category-wise and Day-wise distributions.
 - **Offline First**: All your data is securely saved on your device using modern `localStorage`.
+- **No Login Required**: Start tracking your expenses immediately. No accounts, no sign-ups, and complete privacy.
 
 ## 🛠 Technology Stack
 
@@ -20,6 +21,7 @@ This project was generated and bootstrapped utilizing modern web architecture an
 
 - **Frameworks**: React 18, TypeScript, Vite
 - **UI & Styling**: Ionic Framework (`@ionic/react`), Vanilla CSS, FontAwesome Icons, Ionicons
+- **UI Generation**: Built with Google's Stitch
 - **Data Visualization**: Recharts
 - **Native Wrap**: Capacitor (iOS & Android)
 - **AI Assist**: Google's Antigravity
