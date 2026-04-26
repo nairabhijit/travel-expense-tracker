@@ -1,0 +1,9 @@
+.add-trip-card {
+  margin-top: 16px;
+  border-radius: 16px;
+  /* Shadow removed per Stitch No-Line layer rules */
+}
+
+.add-trip-card ion-item {
+  --padding-start: 0;
+}

@@ -1,2 +1,99 @@
 /* For information on how to create your own theme, please refer to:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+  /* Stitch Elevated Wayfarer Fonts */
+  --ion-font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --ion-font-family-title: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+  /* Force a pure flat, layered design on elements rather than standard shadows */
+  --ion-card-box-shadow: none;
+  --ion-box-shadow: none;
+  
+  /* Primary custom color mapping - Aviation Blue */
+  --ion-color-primary: #0037b0;
+  --ion-color-primary-rgb: 0, 55, 176;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1d4ed8;
+  --ion-color-primary-tint: #b7c4ff; /* primary_fixed_dim from metadata */
+
+  /* Global App Background - Sandy Beige */
+  --ion-background-color: #fbfbe2;
+  --ion-background-color-rgb: 251, 251, 226;
+
+  /* Global App Text - Mountain Slate */
+  --ion-text-color: #1b1d0e;
+  --ion-text-color-rgb: 27, 29, 14;
+
+  /* Surfaces & Containers (Instead of hard lines) */
+  --ion-color-light: #f5f5dc; /* surface_container_low */
+  --ion-color-light-rgb: 245, 245, 220;
+  --ion-color-light-contrast: #1b1d0e;
+  --ion-color-light-shade: #c4c5d7; /* outline_variant, fallback ghost border */
+  --ion-color-light-tint: #ffffff; /* surface_container_lowest */
+
+  --ion-color-step-100: #e4e4cc; /* surface_variant */
+  --ion-color-step-150: #eaead1; /* surface_container_high */
+}
+
+/* Typography Hierarchy Mapping & The "No-Line" Rule enforcement */
+h1, h2, h3, h4, h5, h6, IonTitle, .ion-title {
+  font-family: var(--ion-font-family-title) !important;
+}
+
+/* Global flat overrides / Layout Rules */
+ion-card {
+  box-shadow: none !important;
+  border: none !important; /* No hard outlines per design strategy */
+  border-radius: 12px !important;
+  background: var(--ion-color-light); /* f5f5dc */
+}
+
+ion-button[fill="outline"] {
+  --border-width: 1px;
+  --border-color: var(--ion-color-light-shade);
+  --color: #434655; /* on_surface_variant */
+}
+
+/* Subtle flat row lines transitioning mostly to layout breaks */
+ion-item {
+  --border-color: transparent; /* "Vertical rhythm, not lines" */
+  --background: transparent;
+}
+
+/* Glassmorphism Header (The Glass & Gradient Rule) */
+.glass-header {
+  --background: rgba(251, 251, 226, 0.70) !important; /* surface_bright @ 70% */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  --color: var(--ion-color-primary) !important; /* Aviation Blue prominent links */
+}
+
+/* Button Gradients (The signature lit button) */
+ion-button:not([fill="outline"]):not([fill="clear"]) {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  --border-radius: 12px;
+}
+
+/* Soft-fill Input Fields */
+ion-input, ion-select, ion-datetime-button {
+  --background: var(--ion-color-light); /* surface_container_low */
+  --border-radius: 4px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  margin-top: 4px;
+}
+
+/* Emphasized Field Labels (Stitch Design) */
+ion-item ion-label, .ion-label {
+  font-weight: 700 !important;
+  color: #1b1d0e !important; /* Mountain Slate */
+  font-family: var(--ion-font-family-title) !important; /* Plus Jakarta Sans for high-emphasis labels */
+}
+
+/* Fix for Android Action Sheets with overflow */
+.scrollable-action-sheet .action-sheet-group {
+  max-height: 70vh !important;
+  overflow-y: scroll !important;
+}

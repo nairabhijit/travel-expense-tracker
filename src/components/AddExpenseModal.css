@@ -1,0 +1,41 @@
+.category-grid {
+  padding: 0;
+}
+
+.category-grid ion-col {
+  padding: 4px; /* Reduce default padding between columns */
+}
+
+.category-card {
+  height: 90px;
+  margin: 0; /* Remove default huge IonCard margins */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+}
+
+.category-card ion-card-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.category-icon {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.category-name {
+  font-size: 0.70rem; /* Slightly smaller to fit Food & Dining comfortably */
+  white-space: nowrap;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Fallback just in case */
+}

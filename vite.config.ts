@@ -6,6 +6,7 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
   plugins: [
     react(),
     legacy()
@@ -14,5 +15,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
+    server: {
+      deps: {
+        inline: ['@ionic/core', '@ionic/react']
+      }
+    }
   }
 })
