@@ -27,7 +27,7 @@ const SettingsView: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `travel-expenses-backup-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `travel-expense-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

@@ -84,6 +84,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
   const [customRate, setCustomRate] = useState<string>('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
   // Reset state when modal opens
   useEffect(() => {
@@ -421,12 +422,12 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
                       return (
                       <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
                         {isPdf ? (
-                          <div style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--ion-color-light)' }}>
+                          <div onClick={() => setPreviewUrl(url)} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--ion-color-light)', cursor: 'pointer' }}>
                             <IonIcon icon={documentText} style={{ fontSize: '40px', color: 'var(--ion-color-medium)' }} />
                             <IonText color="medium" style={{ fontSize: '0.6rem', marginTop: '4px' }}>PDF</IonText>
                           </div>
                         ) : (
-                          <img src={url} alt={`Bill preview ${idx + 1}`} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', objectFit: 'cover' }} />
+                          <img onClick={() => setPreviewUrl(url)} src={url} alt={`Bill preview ${idx + 1}`} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', objectFit: 'cover', cursor: 'pointer' }} />
                         )}
                         <IonButton 
                           color="danger" 
@@ -528,6 +529,26 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
           }
         ]}
       />
+
+      <IonModal isOpen={!!previewUrl} onDidDismiss={() => setPreviewUrl(null)}>
+        <IonHeader>
+          <IonToolbar color="dark">
+            <IonTitle>Preview</IonTitle>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setPreviewUrl(null)}>Close</IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent color="dark" className="ion-padding ion-text-center" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', height: '100%' }}>
+          {previewUrl?.startsWith('data:application/pdf') ? (
+            <object data={previewUrl} type="application/pdf" style={{ width: '100%', height: '100%' }}>
+              <p style={{ color: '#fff' }}>Unable to display PDF preview on this device.</p>
+            </object>
+          ) : (
+            <img src={previewUrl || ''} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', margin: 'auto', display: 'block' }} />
+          )}
+        </IonContent>
+      </IonModal>
     </IonModal>
   );
 };

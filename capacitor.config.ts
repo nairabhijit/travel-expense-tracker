@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.abhijitnair.travelexpenses',
-  appName: 'travel-expenses',
+  appName: 'travel-expense-tracker',
   webDir: 'dist',
   plugins: {
     Keyboard: {
