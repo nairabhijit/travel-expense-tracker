@@ -74,7 +74,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
       }
       try {
         await Keyboard.hide();
-      } catch (err) {}
+      } catch (err) { }
     }
   };
   const [expenseCurrency, setExpenseCurrency] = useState<string>(defaultCurrencyCode);
@@ -85,7 +85,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  
+
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -153,11 +153,13 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
       }
     };
 
-    fetchRate();
-  }, [expenseCurrency, isOpen, trip, source]);
+    if (!expenseToEdit || expenseToEdit.currency !== trip.localCurrency) {
+      fetchRate();
+    }
+  }, [expenseCurrency, expenseToEdit, isOpen, trip, source]);
 
-  const effectiveExchangeRate = useCustomRate && customRate && !isNaN(Number(customRate)) 
-    ? Number(customRate) 
+  const effectiveExchangeRate = useCustomRate && customRate && !isNaN(Number(customRate))
+    ? Number(customRate)
     : exchangeRate;
 
   const handleSave = () => {
@@ -166,7 +168,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
       return;
     }
     setError('');
-    
+
     // Calculate final base amount
     const numAmount = Number(amount);
     const calculatedBaseAmount = numAmount * effectiveExchangeRate;
@@ -184,16 +186,16 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
       billUrls: billUrls.length > 0 ? billUrls : undefined,
       billUrl: undefined // Clear the singular field as we've migrated
     });
-    
+
     onDidDismiss();
   };
 
   const categoryObj = CATEGORIES.find(c => c.id === selectedCategory);
-  
+
   // Display calculations
   const isDifferentCurrency = trip && expenseCurrency !== trip.localCurrency;
-  const convertedAmount = amount && !isNaN(Number(amount)) && isDifferentCurrency 
-    ? formatAmount(Number(amount) * effectiveExchangeRate) 
+  const convertedAmount = amount && !isNaN(Number(amount)) && isDifferentCurrency
+    ? formatAmount(Number(amount) * effectiveExchangeRate)
     : null;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -269,7 +271,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
-        
+
         {!selectedCategory ? (
           <>
             <h3 className="ion-margin-top ion-text-center">Select a Category</h3>
@@ -277,11 +279,11 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
               <IonRow>
                 {CATEGORIES.map(cat => (
                   <IonCol size="4" key={cat.id}>
-                    <IonCard 
-                      className="category-card ion-activatable ripple-parent" 
+                    <IonCard
+                      className="category-card ion-activatable ripple-parent"
                       onClick={() => setSelectedCategory(cat.id)}
                     >
-                        <IonCardContent className="ion-text-center">
+                      <IonCardContent className="ion-text-center">
                         <div className="category-icon" style={{ fontSize: '1.5rem', marginBottom: '8px', color: 'var(--ion-color-primary)' }}>
                           <FontAwesomeIcon icon={cat.icon} />
                         </div>
@@ -295,22 +297,22 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
           </>
         ) : (
           <>
-             <IonItem lines="none" className="ion-margin-vertical">
-                <div slot="start" className="category-icon" style={{ fontSize: '1.75rem', margin: 0, marginRight: '12px', color: 'var(--ion-color-primary)' }}>
-                  {categoryObj?.icon && <FontAwesomeIcon icon={categoryObj.icon} />}
-                </div>
-                <IonLabel>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{categoryObj?.name}</h2>
-                </IonLabel>
-                <IonButton fill="clear" onClick={() => setSelectedCategory(null)}>Change</IonButton>
+            <IonItem lines="none" className="ion-margin-vertical">
+              <div slot="start" className="category-icon" style={{ fontSize: '1.75rem', margin: 0, marginRight: '12px', color: 'var(--ion-color-primary)' }}>
+                {categoryObj?.icon && <FontAwesomeIcon icon={categoryObj.icon} />}
+              </div>
+              <IonLabel>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{categoryObj?.name}</h2>
+              </IonLabel>
+              <IonButton fill="clear" onClick={() => setSelectedCategory(null)}>Change</IonButton>
             </IonItem>
 
             <IonItem>
               <IonLabel position="stacked">Title *</IonLabel>
-              <IonInput 
-                type="text" 
-                placeholder="e.g. Dinner, Taxi ticket, etc." 
-                value={title} 
+              <IonInput
+                type="text"
+                placeholder="e.g. Dinner, Taxi ticket, etc."
+                value={title}
                 onIonInput={e => setTitle(e.detail.value!)}
                 enterkeyhint="next"
                 onKeyUp={dismissKeyboard}
@@ -319,8 +321,8 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
 
             <IonItem>
               <IonLabel position="stacked">Currency *</IonLabel>
-              <IonSelect 
-                value={expenseCurrency} 
+              <IonSelect
+                value={expenseCurrency}
                 onIonChange={e => setExpenseCurrency(e.detail.value)}
                 interface="action-sheet"
                 interfaceOptions={{ cssClass: 'scrollable-action-sheet' }}
@@ -339,29 +341,29 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
               <IonLabel position="stacked">
                 Amount ({CURRENCIES.find(c => c.code === expenseCurrency)?.symbol}) *
               </IonLabel>
-              <IonInput 
-                type="number" 
-                placeholder="0.00" 
-                value={amount} 
+              <IonInput
+                type="number"
+                placeholder="0.00"
+                value={amount}
                 onIonInput={e => setAmount(e.detail.value!)}
                 enterkeyhint="done"
                 onKeyUp={dismissKeyboard}
               ></IonInput>
             </IonItem>
-            
+
             {isDifferentCurrency && (
               <div className="ion-padding-start ion-padding-end ion-margin-top">
                 <IonItem lines="none" className="ion-no-padding">
                   <IonLabel>Use custom conversion rate</IonLabel>
                   <IonToggle checked={useCustomRate} onIonChange={e => setUseCustomRate(e.detail.checked)} />
                 </IonItem>
-                
+
                 {useCustomRate && (
                   <IonItem className="ion-margin-bottom">
                     <IonLabel position="stacked">Custom Rate (1 {expenseCurrency} = ? {trip?.localCurrency})</IonLabel>
-                    <IonInput 
-                      type="number" 
-                      value={customRate} 
+                    <IonInput
+                      type="number"
+                      value={customRate}
                       onIonInput={e => setCustomRate(e.detail.value!)}
                       placeholder="e.g. 1.25"
                       enterkeyhint="done"
@@ -373,12 +375,12 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
                 <div style={{ minHeight: '20px', marginTop: '8px' }}>
                   {isFetchingRate && !useCustomRate ? (
                     <IonText color="medium" style={{ fontSize: '0.85rem' }}>
-                      <IonSpinner name="dots" style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight: '4px' }} /> 
+                      <IonSpinner name="dots" style={{ width: '16px', height: '16px', verticalAlign: 'middle', marginRight: '4px' }} />
                       Fetching latest rates...
                     </IonText>
                   ) : (
                     <IonText color="medium" style={{ fontSize: '0.85rem' }}>
-                      ~ {CURRENCIES.find(c => c.code === trip?.localCurrency)?.symbol}{convertedAmount} {trip?.localCurrency} 
+                      ~ {CURRENCIES.find(c => c.code === trip?.localCurrency)?.symbol}{convertedAmount} {trip?.localCurrency}
                       {useCustomRate ? ' (Custom Rate)' : (source === 'cash' && expenseCurrency === trip?.spendingCurrency && trip?.cashExchangeRate ? ' (via Trip Cash Rate)' : ' (Live Rate)')}
                     </IonText>
                   )}
@@ -413,39 +415,39 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
             <IonItem className="ion-margin-top">
               <IonLabel position="stacked">Bill Screenshots (Optional)</IonLabel>
               <div style={{ padding: '10px 0', width: '100%' }}>
-                
+
                 {/* Images Preview Grid */}
                 {billUrls.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '16px' }}>
                     {billUrls.map((url, idx) => {
                       const isPdf = url.startsWith('data:application/pdf');
                       return (
-                      <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
-                        {isPdf ? (
-                          <div onClick={() => setPreviewUrl(url)} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--ion-color-light)', cursor: 'pointer' }}>
-                            <IonIcon icon={documentText} style={{ fontSize: '40px', color: 'var(--ion-color-medium)' }} />
-                            <IonText color="medium" style={{ fontSize: '0.6rem', marginTop: '4px' }}>PDF</IonText>
-                          </div>
-                        ) : (
-                          <img onClick={() => setPreviewUrl(url)} src={url} alt={`Bill preview ${idx + 1}`} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', objectFit: 'cover', cursor: 'pointer' }} />
-                        )}
-                        <IonButton 
-                          color="danger" 
-                          shape="round" 
-                          size="small" 
-                          onClick={() => {
-                            setBillUrls(prev => prev.filter((_, i) => i !== idx));
-                          }}
-                          style={{ position: 'absolute', top: '-10px', right: '-10px', margin: 0, '--padding-start': '8px', '--padding-end': '8px' }}
-                        >
-                          <IonIcon icon={trash} slot="icon-only" />
-                        </IonButton>
-                      </div>
-                    );
+                        <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
+                          {isPdf ? (
+                            <div onClick={() => setPreviewUrl(url)} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--ion-color-light)', cursor: 'pointer' }}>
+                              <IonIcon icon={documentText} style={{ fontSize: '40px', color: 'var(--ion-color-medium)' }} />
+                              <IonText color="medium" style={{ fontSize: '0.6rem', marginTop: '4px' }}>PDF</IonText>
+                            </div>
+                          ) : (
+                            <img onClick={() => setPreviewUrl(url)} src={url} alt={`Bill preview ${idx + 1}`} style={{ height: '100px', width: '100px', borderRadius: '8px', border: '1px solid var(--ion-color-light-shade)', objectFit: 'cover', cursor: 'pointer' }} />
+                          )}
+                          <IonButton
+                            color="danger"
+                            shape="round"
+                            size="small"
+                            onClick={() => {
+                              setBillUrls(prev => prev.filter((_, i) => i !== idx));
+                            }}
+                            style={{ position: 'absolute', top: '-10px', right: '-10px', margin: 0, '--padding-start': '8px', '--padding-end': '8px' }}
+                          >
+                            <IonIcon icon={trash} slot="icon-only" />
+                          </IonButton>
+                        </div>
+                      );
                     })}
                   </div>
                 )}
-                
+
                 {/* Action Buttons */}
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <IonButton fill="outline" color="medium" onClick={() => cameraInputRef.current?.click()} style={{ flex: 1 }}>
@@ -457,22 +459,22 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
                     Gallery
                   </IonButton>
                 </div>
-                
+
                 {/* Hidden Inputs */}
-                <input 
-                  type="file" 
-                  accept="image/*,application/pdf" 
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
                   multiple
-                  ref={fileInputRef} 
-                  style={{ display: 'none' }} 
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
                   onChange={handleFileChange}
                 />
-                <input 
-                  type="file" 
-                  accept="image/*" 
+                <input
+                  type="file"
+                  accept="image/*"
                   capture="environment"
-                  ref={cameraInputRef} 
-                  style={{ display: 'none' }} 
+                  ref={cameraInputRef}
+                  style={{ display: 'none' }}
                   onChange={handleFileChange}
                 />
               </div>
@@ -486,21 +488,21 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
 
             <div className="ion-margin-top ion-padding-top" style={{ display: 'flex', gap: '8px' }}>
               {expenseToEdit && onDeleteExpense && (
-                <IonButton 
-                  expand="block" 
-                  shape="round" 
-                  color="danger" 
-                  fill="outline" 
-                  style={{ flex: 1 }} 
+                <IonButton
+                  expand="block"
+                  shape="round"
+                  color="danger"
+                  fill="outline"
+                  style={{ flex: 1 }}
                   onClick={() => setShowDeleteConfirm(true)}
                 >
                   Delete
                 </IonButton>
               )}
-              <IonButton 
-                expand="block" 
-                shape="round" 
-                style={{ flex: expenseToEdit && onDeleteExpense ? 1 : undefined }} 
+              <IonButton
+                expand="block"
+                shape="round"
+                style={{ flex: expenseToEdit && onDeleteExpense ? 1 : undefined }}
                 onClick={handleSave}
               >
                 {expenseToEdit ? 'Update' : 'Save Expense'}
@@ -517,15 +519,15 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
         message="Are you sure you want to permanently delete this expense?"
         buttons={[
           { text: 'Cancel', role: 'cancel' },
-          { 
-            text: 'Delete', 
-            role: 'destructive', 
+          {
+            text: 'Delete',
+            role: 'destructive',
             handler: () => {
               if (expenseToEdit && onDeleteExpense) {
                 onDeleteExpense(expenseToEdit.id!);
                 onDidDismiss();
               }
-            } 
+            }
           }
         ]}
       />
