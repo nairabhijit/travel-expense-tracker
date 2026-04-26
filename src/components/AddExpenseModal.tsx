@@ -33,6 +33,7 @@ import { formatAmount } from '../utils/format';
 import './AddExpenseModal.css';
 import { Keyboard } from '@capacitor/keyboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 interface AddExpenseModalProps {
   isOpen: boolean;
@@ -541,14 +542,28 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({ isOpen, onDidDismiss,
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent color="dark" className="ion-padding ion-text-center" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', height: '100%' }}>
-          {previewUrl?.startsWith('data:application/pdf') ? (
-            <object data={previewUrl} type="application/pdf" style={{ width: '100%', height: '100%' }}>
-              <p style={{ color: '#fff' }}>Unable to display PDF preview on this device.</p>
-            </object>
-          ) : (
-            <img src={previewUrl || ''} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', margin: 'auto', display: 'block' }} />
-          )}
+        <IonContent color="dark" className="ion-padding ion-text-center preview-content-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <TransformWrapper
+            initialScale={1}
+            minScale={1}
+            maxScale={8}
+            centerOnInit={true}
+            pinch={{ step: 5 }}
+            doubleClick={{ step: 2 }}
+          >
+            <TransformComponent 
+              wrapperStyle={{ width: '100%', height: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+              contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {previewUrl?.startsWith('data:application/pdf') ? (
+                <object data={previewUrl} type="application/pdf" style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+                  <p style={{ color: '#fff' }}>Unable to display PDF preview on this device.</p>
+                </object>
+              ) : (
+                <img src={previewUrl || ''} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', margin: 'auto', display: 'block', pointerEvents: 'auto' }} />
+              )}
+            </TransformComponent>
+          </TransformWrapper>
         </IonContent>
       </IonModal>
     </IonModal>
