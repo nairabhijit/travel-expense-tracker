@@ -15,6 +15,15 @@ Built seamlessly using **Google's Antigravity**, this application allows you to 
 - **Offline First**: All your data is securely saved on your device using modern `localStorage`.
 - **No Login Required**: Start tracking your expenses immediately. No accounts, no sign-ups, and complete privacy.
 
+## 📸 App Screenshots
+
+<img src="docs/dashboard.PNG" width="250" alt="Home Dashboard">
+<img src="docs/add-trip.PNG" width="250" alt="Add Trip">
+<img src="docs/expense-categories.PNG" width="250" alt="Expense Categories">
+<img src="docs/add-expense.PNG" width="250" alt="Add Expense">
+<img src="docs/stats.PNG" width="250" alt="Get Trip Stats">
+<img src="docs/settings.PNG" width="250" alt="App settings">
+
 ## 🛠 Technology Stack
 
 This project was generated and bootstrapped utilizing modern web architecture and then wrapped into a native application.
